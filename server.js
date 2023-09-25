@@ -4,6 +4,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const path = require('path');
+const multer = require('multer');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const router = express.Router();
@@ -26,7 +27,8 @@ app.use(
     extended: true,
   })
 );
-
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -43,11 +45,14 @@ router.get("/", (req, res) => {
 });
 
 /** BACKEND ROUTES **/
-router.post("/vision/labels", ImageRoutes.getLabels);
+router.post("/labeling", upload.single('image'), ImageRoutes.getLabels);
 
 app.use("/", router);
 
+// Serve static assets
+app.use('/assets', express.static('assets'));
+
 /**  START SERVER **/
 app.listen(port, () => {
-  console.log(`Google Vision API Demo Running at http://localhost:${port}`);
+  console.log(`Custom ML Model API Demo Running at http://localhost:${port}`);
 });
