@@ -1,0 +1,7 @@
+# Files
+.env
+.DS_Store
+gcp_key.json
+
+# Folders
+/node_modules
