@@ -4,4 +4,4 @@
 gcp_key.json
 
 # Folders
-/node_modules
+*/node_modules
