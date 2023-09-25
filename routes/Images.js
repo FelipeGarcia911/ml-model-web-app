@@ -1,13 +1,13 @@
-const { labelDetection } = require("../utils/GoogleVisionAPI");
+const { labelDetection } = require("../api/ModelAPI");
 
 exports.getLabels = async (req, res) => {
-  const { imageURL } = req.body;
-  const response = { status: 200, data: { imageURL }, message: "" };
+  const { file } = req;
+  const response = { status: 200, data: {}, message: "" };
 
-  if (imageURL) {
+  if (file) {
     try {
-      const labels = await labelDetection(imageURL);
-      response.data.labels = labels;
+      const result = await labelDetection(file);
+      response.data = result;
     } catch (error) {
       response.status = 400;
       response.message = `Error processing image ${error}`;
